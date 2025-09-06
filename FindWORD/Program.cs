@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 class Program
 {
-    static void make_folder_of_files()
+    static void make_folder_of_files(string outputDir)
     {
-        string outputDir = "txt_files_with_text";
         Directory.CreateDirectory(outputDir);
 
         string[] sampleWords = {
@@ -212,7 +211,7 @@ class Program
     }    
     static void Main()
         {
-        //make_folder_of_files(); // call to make folder of 100 files to search in it (used only one time when you use the program for the first time)
+        make_folder_of_files("txt_files_with_text"); // call to make folder of 100 files to search in it (used only one time when you use the program for the first time)
         static void find_word(string word)
         {
             string folder_path = @"C:\Users\MG13\source\repos\FindWORD\FindWORD\bin\Debug\net8.0\txt_files_with_text";
@@ -232,7 +231,7 @@ class Program
             {
                 Console.WriteLine("enter the word you want to search on it (example: data)");
                 string word = Console.ReadLine();
-                find_word(word); // example (data)
+                find_word(word); // example  (data)
             }
             else
             {
