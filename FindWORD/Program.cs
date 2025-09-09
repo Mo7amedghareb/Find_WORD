@@ -8,7 +8,7 @@ class Program
     {
         Directory.CreateDirectory(outputDir);
 
-        string[] sampleWords = {
+        string[] sSampleWords = {
     "computer","network","data","security","project","system","search","performance","cloud","server",
     "database","CSharp","OpenAI","machine","learning","hello","world","random","example","test",
     "application","software","hardware","internet","protocol","developer","engineer","programming","algorithm","function",
@@ -135,53 +135,53 @@ class Program
 
 
         Random rand = new Random();
-        int numFiles = 100;
+        int nNumFiles = 100;
 
-        for (int i = 1; i <= numFiles; i++)
+        for (int i = 1; i <= nNumFiles; i++)
         {
             // File size in bytes (between 1MB and 5MB)
-            int sizeInBytes = rand.Next(1 * 1024 * 1024, 2 * 1024 * 1024);
+            int nSizeInBytes = rand.Next(1 * 1024 * 1024, 2 * 1024 * 1024);
 
-            string filePath = Path.Combine(outputDir, $"file_{i}.txt");
+            string sFilePath = Path.Combine(outputDir, $"file_{i}.txt");
 
-            using (StreamWriter writer = new StreamWriter(filePath, false, Encoding.UTF8))
+            using (StreamWriter writer = new StreamWriter(sFilePath, false, Encoding.UTF8))
             {
-                int written = 0;
-                while (written < sizeInBytes)
+                int nWritten = 0;
+                while (nWritten < nSizeInBytes)
                 {
                     // Generate a sentence of random words
-                    string sentence = string.Join(" ",
-                        new string[10].Select(_ => sampleWords[rand.Next(sampleWords.Length)])
+                    string sSentence = string.Join(" ",
+                        new string[10].Select(_ => sSampleWords[rand.Next(sSampleWords.Length)])
                     ) + Environment.NewLine;
 
-                    writer.Write(sentence);
-                    written += Encoding.UTF8.GetByteCount(sentence);
+                    writer.Write(sSentence);
+                    nWritten += Encoding.UTF8.GetByteCount(sSentence);
                 }
             }
         }
 
-        Console.WriteLine($"✅ {numFiles} files have been created in the folder: {Path.GetFullPath(outputDir)}");
+        Console.WriteLine($"✅ {nNumFiles} files have been created in the folder: {Path.GetFullPath(outputDir)}");
     }
     static void search_for_word(Dictionary<string, List<(string fileName, int lineNumber, int count)>> myDict,string word,string folder_path)
     {
         if (myDict.ContainsKey(word))
         {
-            int totalCount = 0;
+            int nTotalCount = 0;
             Console.WriteLine($"word \"{word}\" found in lines :");
             foreach (var entry in myDict[word])
             {
                 string[] fileLines = File.ReadAllLines(Path.Combine(folder_path, entry.fileName));
-                string line = fileLines[entry.lineNumber - 1];
+                string sLine = fileLines[entry.lineNumber - 1];
 
                 // highlight word
-                string highlighted = line.Replace(word, $"*{word}*");
+                string sHighlighted = sLine.Replace(word, $"*{word}*");
 
-                Console.WriteLine($"[{entry.fileName}] (line {entry.lineNumber}) {highlighted}");
+                Console.WriteLine($"[{entry.fileName}] (line {entry.lineNumber}) {sHighlighted}");
 
-                totalCount += entry.count;
+                nTotalCount += entry.count;
             }
 
-            Console.WriteLine($"word {word} appears {totalCount} times");
+            Console.WriteLine($"word {word} appears {nTotalCount} times");
         }
         else
         {
@@ -194,49 +194,53 @@ class Program
         {
             List<string> lines = File.ReadAllLines(file).ToList();
             int lineNumber = 1;
-            foreach (string line in lines)
+            foreach (string sLine in lines)
             {
-                List<string> wordsInLine = line.Split(' ').ToList();
-                foreach (string oneWord in wordsInLine)
+                List<string> wordsInLine = sLine.Split(' ').ToList();
+                foreach (string sOneWord in wordsInLine)
                 {
-                    if (!myDict.ContainsKey(oneWord))
+                    if (!myDict.ContainsKey(sOneWord))
                     {
-                        myDict[oneWord] = new List<(string, int, int)>();
+                        myDict[sOneWord] = new List<(string, int, int)>();
                     }
-                    myDict[oneWord].Add((Path.GetFileName(file), lineNumber, 1));
+                    myDict[sOneWord].Add((Path.GetFileName(file), lineNumber, 1));
                 }
                 lineNumber++;
             }
         }
-    }    
-    static void Main()
-        {
-        make_folder_of_files("txt_files_with_text"); // call to make folder of 100 files to search in it (used only one time when you use the program for the first time)
-        static void find_word(string word)
-        {
-            string folder_path = @"C:\Users\MG13\source\repos\FindWORD\FindWORD\bin\Debug\net8.0\txt_files_with_text";
-            string[] files = Directory.GetFiles(folder_path, "*.txt"); // get all files in folder 
-            Dictionary<string, List<(string fileName, int lineNumber, int count)>> myDict= new Dictionary<string, List<(string fileName, int lineNumber, int count)>>();
-            preprocessing(files, myDict);
-            search_for_word(myDict, word, folder_path);
-        }
-        bool choose = true;
-        while (choose)
+    }
+    static void find_word(string word)
+    {
+        string sFolder_Path = @"C:\Users\MG13\source\repos\FindWORD\FindWORD\bin\Debug\net8.0\txt_files_with_text";
+        string[] files = Directory.GetFiles(sFolder_Path, "*.txt"); // get all files in folder 
+        Dictionary<string, List<(string fileName, int lineNumber, int count)>> myDict = new Dictionary<string, List<(string fileName, int lineNumber, int count)>>();
+        preprocessing(files, myDict);
+        search_for_word(myDict, word, sFolder_Path);
+    }
+    static void Print()
+    {
+        bool bChoose = true;
+        while (bChoose)
         {
             Console.WriteLine("choose from the menu :");
             Console.WriteLine("1- for search");
             Console.WriteLine("0- for exit");
-            int input = int.Parse(Console.ReadLine());
-            if (input!=0)
+            int nInput = int.Parse(Console.ReadLine()!);
+            if (nInput != 0)
             {
                 Console.WriteLine("enter the word you want to search on it (example: data)");
-                string word = Console.ReadLine();
-                find_word(word); // example  (data)
+                string sWord = Console.ReadLine()!;
+                find_word(sWord); // example  (data)
             }
             else
             {
-                choose = false;
+                bChoose = false;
             }
         }
+    }
+    static void Main()
+    {
+        make_folder_of_files("txt_files_with_text"); // call to make folder of 100 files to search in it (used only one time when you use the program for the first time)
+        Print();
     }
 }
